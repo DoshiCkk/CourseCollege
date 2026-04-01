@@ -78,9 +78,11 @@ const ArticleDetails = () => {
             </div>
           )}
           
-          <div className="article-body" style={{ whiteSpace: 'pre-wrap', lineHeight: '1.8' }}>
-            {article.content}
-          </div>
+          <div 
+            className="article-body ql-editor" 
+            style={{ padding: 0, fontSize: '1.15rem', color: 'var(--text-primary)' }} 
+            dangerouslySetInnerHTML={{ __html: article.content }} 
+          />
         </div>
       </div>
     </div>
