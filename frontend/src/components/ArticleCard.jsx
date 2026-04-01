@@ -6,7 +6,7 @@ const ArticleCard = ({ article }) => {
     <div className="article-card glass-panel animate-fade">
       {article.coverImage && (
         <img 
-          src={`http://localhost:5000/uploads/${article.coverImage}`} 
+          src={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/uploads/${article.coverImage}`}
           alt={article.title} 
           className="article-image"
           onError={(e) => { e.target.src = 'https://placehold.co/600x400/1e293b/f8fafc?text=No+Image' }}
@@ -14,7 +14,12 @@ const ArticleCard = ({ article }) => {
       )}
       <div className="article-content">
         <h3 className="article-title">{article.title}</h3>
-        <p className="article-excerpt">{article.content.substring(0, 100)}...</p>
+        <span style={{ display: 'inline-block', padding: '2px 10px', borderRadius: '8px', background: 'var(--glass-border)', color: 'var(--accent)', fontSize: '0.75rem', marginBottom: '8px' }}>
+          {article.category || 'General'}
+        </span>
+        <p className="article-excerpt">
+          {new DOMParser().parseFromString(article.content, 'text/html').body.textContent?.substring(0, 120) || ''}...
+        </p>
         <div className="article-meta">
           <span className="article-author">By {article.author?.name || 'Unknown'}</span>
           <span className="article-date">{new Date(article.createdAt).toLocaleDateString()}</span>

@@ -7,7 +7,9 @@ import Register from './pages/Register';
 import CreateArticle from './pages/CreateArticle';
 import EditArticle from './pages/EditArticle';
 import ArticleDetails from './pages/ArticleDetails';
+import MyArticles from './pages/MyArticles';
 import NotFound from './pages/NotFound';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -19,8 +21,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/create-article" element={<CreateArticle />} />
-          <Route path="/edit-article/:id" element={<EditArticle />} />
+          <Route path="/my-articles" element={<PrivateRoute><MyArticles /></PrivateRoute>} />
+          <Route path="/create-article" element={<PrivateRoute><CreateArticle /></PrivateRoute>} />
+          <Route path="/edit-article/:id" element={<PrivateRoute><EditArticle /></PrivateRoute>} />
           <Route path="/article/:id" element={<ArticleDetails />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

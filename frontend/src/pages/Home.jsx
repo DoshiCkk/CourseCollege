@@ -4,16 +4,24 @@ import api from '../services/api';
 
 const Home = () => {
   const [articles, setArticles] = useState([]);
+  const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('All');
+  
+  const PAGE_SIZE = 6;
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         const res = await api.get('/articles');
         setArticles(res.data);
+        setFiltered(res.data);
       } catch (err) {
         setArticles([]);
+        setFiltered([]);
         setError('No connection to database. Please refresh or check server.');
       } finally {
         setLoading(false);
@@ -22,20 +30,77 @@ const Home = () => {
     fetchArticles();
   }, []);
 
+  useEffect(() => {
+    const q = search.toLowerCase();
+    setFiltered(
+      articles.filter(a => {
+        const matchQ = q ? a.title.toLowerCase().includes(q) || (a.author?.name || '').toLowerCase().includes(q) : true;
+        const matchC = category !== 'All' ? a.category === category : true;
+        return matchQ && matchC;
+      })
+    );
+    setPage(1); // Reset page on filter change
+  }, [search, category, articles]);
+
   if (loading) return <div className="loader-container"><div className="loader"></div></div>;
 
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+
   return (
-    <div>
-      <h1 className="mb-6">Latest Articles</h1>
-      {error && <div className="glass-panel mb-4 text-secondary">{error}</div>}
-      {articles.length === 0 ? (
-        <p className="text-secondary text-center glass-panel">No articles found. Be the first to publish!</p>
-      ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
-          {articles.map(article => (
-            <ArticleCard key={article._id} article={article} />
-          ))}
+    <div className="animate-fade">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+        <h1 style={{ margin: 0 }}>Latest Articles</h1>
+        
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <select 
+            value={category} 
+            onChange={e => setCategory(e.target.value)} 
+            style={{ padding: '10px 16px', borderRadius: '12px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-primary)', outline: 'none' }}
+          >
+            {['All','General','Technology','Science','Politics','Sports','Culture','Business'].map(c => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+
+          <input
+            type="text"
+            placeholder="Search by title or author..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{ padding: '10px 16px', borderRadius: '12px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-primary)', fontSize: '0.9rem', width: '260px', outline: 'none' }}
+          />
         </div>
+      </div>
+
+      {error && <div className="glass-panel mb-4 text-secondary">{error}</div>}
+      
+      {filtered.length === 0 ? (
+        <p className="text-secondary text-center glass-panel">
+          {search || category !== 'All' ? `No articles found for your filters` : 'No articles found. Be the first to publish!'}
+        </p>
+      ) : (
+        <>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
+            {paginated.map(article => (
+              <ArticleCard key={article._id} article={article} />
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '32px' }}>
+              <button onClick={() => setPage(p => Math.max(1, p-1))} disabled={page === 1} className="btn-secondary" style={{ padding: '8px 18px' }}>&larr; Prev</button>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button key={i+1} onClick={() => setPage(i+1)} className={page === i+1 ? 'btn-primary' : 'btn-secondary'} style={{ padding: '8px 14px', minWidth: '40px' }}>{i+1}</button>
+              ))}
+              <button onClick={() => setPage(p => Math.min(totalPages, p+1))} disabled={page === totalPages} className="btn-secondary" style={{ padding: '8px 18px' }}>Next &rarr;</button>
+            </div>
+          )}
+
+          <p className="text-secondary text-center" style={{ marginTop: '16px', fontSize: '0.85rem' }}>
+            Showing {paginated.length} of {filtered.length} articles
+          </p>
+        </>
       )}
     </div>
   );

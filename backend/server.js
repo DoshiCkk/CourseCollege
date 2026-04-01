@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
+import rateLimit from 'express-rate-limit';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import articleRoutes from './routes/articleRoutes.js';
@@ -12,10 +13,26 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
+}));
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  message: { message: 'Too many requests, please try again later.' }
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { message: 'Too many login attempts, please try again later.' }
+});
+
+app.use('/api/', limiter);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/articles', articleRoutes);
 
 const __dirname = path.resolve();

@@ -7,7 +7,7 @@ import api from '../services/api';
 
 const EditArticle = () => {
   const { id } = useParams();
-  const [formData, setFormData] = useState({ title: '', content: '' });
+  const [formData, setFormData] = useState({ title: '', content: '', category: 'General' });
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -17,7 +17,7 @@ const EditArticle = () => {
     const fetchArticle = async () => {
       try {
         const res = await api.get(`/articles/${id}`);
-        setFormData({ title: res.data.title, content: res.data.content });
+        setFormData({ title: res.data.title, content: res.data.content, category: res.data.category || 'General' });
       } catch (err) {
         toast.error('Failed to load article details');
       } finally {
@@ -52,6 +52,7 @@ const EditArticle = () => {
       const data = new FormData();
       data.append('title', formData.title);
       data.append('content', formData.content);
+      data.append('category', formData.category);
       if (file) data.append('coverImage', file);
 
       const res = await api.put(`/articles/${id}`, data, {
@@ -80,6 +81,17 @@ const EditArticle = () => {
           placeholder="Edit Article Title..."
           autoFocus
         />
+
+        <select
+          value={formData.category}
+          onChange={(e) => setFormData({...formData, category: e.target.value})}
+          disabled={saving}
+          style={{ padding: '12px 16px', borderRadius: '12px', border: '2px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-primary)', marginBottom: '24px', width: '100%', outline: 'none', fontSize: '1rem' }}
+        >
+          {['General','Technology','Science','Politics','Sports','Culture','Business'].map(c => (
+            <option key={c} value={c} style={{ background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}>{c}</option>
+          ))}
+        </select>
 
         <div className="file-dropzone">
           <input 

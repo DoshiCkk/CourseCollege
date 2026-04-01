@@ -6,7 +6,7 @@ import 'react-quill-new/dist/quill.snow.css';
 import api from '../services/api';
 
 const CreateArticle = () => {
-  const [formData, setFormData] = useState({ title: '', content: '' });
+  const [formData, setFormData] = useState({ title: '', content: '', category: 'General' });
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -41,6 +41,7 @@ const CreateArticle = () => {
       const data = new FormData();
       data.append('title', formData.title);
       data.append('content', formData.content);
+      data.append('category', formData.category);
       if (file) {
         data.append('coverImage', file);
       }
@@ -69,6 +70,17 @@ const CreateArticle = () => {
           placeholder="New Article Title..."
           autoFocus
         />
+
+        <select
+          value={formData.category}
+          onChange={(e) => setFormData({...formData, category: e.target.value})}
+          disabled={loading}
+          style={{ padding: '12px 16px', borderRadius: '12px', border: '2px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-primary)', marginBottom: '24px', width: '100%', outline: 'none', fontSize: '1rem' }}
+        >
+          {['General','Technology','Science','Politics','Sports','Culture','Business'].map(c => (
+            <option key={c} value={c} style={{ background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}>{c}</option>
+          ))}
+        </select>
 
         <div className="file-dropzone">
           <input 
