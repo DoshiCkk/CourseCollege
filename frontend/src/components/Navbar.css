@@ -10,6 +10,12 @@
   transition: all 0.4s ease;
 }
 
+.auth-btns {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .nav-content {
   display: flex;
   justify-content: space-between;
