@@ -8,6 +8,7 @@ import CreateArticle from './pages/CreateArticle';
 import EditArticle from './pages/EditArticle';
 import ArticleDetails from './pages/ArticleDetails';
 import MyArticles from './pages/MyArticles';
+import Profile from './pages/Profile';
 import ErrorPage from './pages/ErrorPage';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route path="/my-articles" element={<PrivateRoute><MyArticles /></PrivateRoute>} />
           <Route path="/create-article" element={<PrivateRoute><CreateArticle /></PrivateRoute>} />
           <Route path="/edit-article/:id" element={<PrivateRoute><EditArticle /></PrivateRoute>} />

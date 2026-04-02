@@ -1,0 +1,77 @@
+{
+  "nav": {
+    "home": "Home",
+    "profile": "Profile",
+    "my_articles": "My Articles",
+    "new_article": "New Article",
+    "login": "Log In",
+    "register": "Sign Up",
+    "logout": "Logout",
+    "welcome": "Welcome"
+  },
+  "home": {
+    "title": "Latest Articles",
+    "search_placeholder": "Search by title or author...",
+    "no_articles": "No articles found. Be the first to publish!",
+    "no_results": "No articles found for your filters",
+    "showing": "Showing {{count}} of {{total}} articles",
+    "prev": "Prev",
+    "next": "Next"
+  },
+  "profile": {
+    "settings": "Account Settings",
+    "name": "Full Name",
+    "email": "Email Address",
+    "new_password": "New Password (leave blank to keep current)",
+    "confirm_password": "Confirm New Password",
+    "save": "Save Changes",
+    "performance": "Performance",
+    "articles": "Articles",
+    "views": "Total Views",
+    "user_id": "User ID",
+    "member_since": "Member since"
+  },
+  "auth": {
+    "login_title": "Welcome Back",
+    "register_title": "Join Our Community",
+    "email": "Email Address",
+    "password": "Password",
+    "name": "Full Name",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "btn_login": "Log In",
+    "btn_register": "Create Account"
+  },
+  "article": {
+    "by": "By",
+    "views": "views",
+    "back": "Back to Articles",
+    "edit": "Edit Article",
+    "delete": "Delete",
+    "publish": "Publish Article",
+    "save": "Save Changes",
+    "title_placeholder": "Article Title...",
+    "content_placeholder": "Start typing your amazing story here...",
+    "dropzone": "Click or drag to attach a striking cover image",
+    "category": "Category",
+    "confirm_delete": "Are you sure you want to delete this article?"
+  },
+  "categories": {
+    "All": "All",
+    "General": "General",
+    "Technology": "Technology",
+    "Science": "Science",
+    "Politics": "Politics",
+    "Sports": "Sports",
+    "Culture": "Culture",
+    "Business": "Business"
+  },
+  "errors": {
+    "400": { "title": "Bad Request", "message": "The server couldn't understand your request." },
+    "401": { "title": "Unauthorized", "message": "You need to log in to access this resource." },
+    "403": { "title": "Forbidden", "message": "You don't have permission to access this content." },
+    "404": { "title": "Page Not Found", "message": "The page you're looking for has vanished." },
+    "500": { "title": "Internal Server Error", "message": "Something blew up on our end." },
+    "back_home": "Return to Safety"
+  }
+}

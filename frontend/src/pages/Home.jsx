@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import ArticleCard from '../components/ArticleCard';
 import api from '../services/api';
 
 const Home = () => {
+  const { t } = useTranslation();
   const [articles, setArticles] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,13 +23,13 @@ const Home = () => {
       } catch (err) {
         setArticles([]);
         setFiltered([]);
-        setError('No connection to database. Please refresh or check server.');
+        setError(t('errors.500.message'));
       } finally {
         setLoading(false);
       }
     };
     fetchArticles();
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     const q = search.toLowerCase();
@@ -50,7 +51,7 @@ const Home = () => {
   return (
     <div className="animate-fade">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
-        <h1 style={{ margin: 0 }}>Latest Articles</h1>
+        <h1 style={{ margin: 0 }}>{t('home.title')}</h1>
         
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <select 
@@ -59,13 +60,13 @@ const Home = () => {
             style={{ padding: '10px 16px', borderRadius: '12px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-primary)', outline: 'none' }}
           >
             {['All','General','Technology','Science','Politics','Sports','Culture','Business'].map(c => (
-              <option key={c} value={c}>{c}</option>
+              <option key={c} value={c}>{t(`categories.${c}`)}</option>
             ))}
           </select>
 
           <input
             type="text"
-            placeholder="Search by title or author..."
+            placeholder={t('home.search_placeholder')}
             value={search}
             onChange={e => setSearch(e.target.value)}
             style={{ padding: '10px 16px', borderRadius: '12px', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: 'var(--text-primary)', fontSize: '0.9rem', width: '260px', outline: 'none' }}
@@ -77,7 +78,7 @@ const Home = () => {
       
       {filtered.length === 0 ? (
         <p className="text-secondary text-center glass-panel">
-          {search || category !== 'All' ? `No articles found for your filters` : 'No articles found. Be the first to publish!'}
+          {search || category !== 'All' ? t('home.no_results') : t('home.no_articles')}
         </p>
       ) : (
         <>
@@ -89,16 +90,16 @@ const Home = () => {
 
           {totalPages > 1 && (
             <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '32px' }}>
-              <button onClick={() => setPage(p => Math.max(1, p-1))} disabled={page === 1} className="btn-secondary" style={{ padding: '8px 18px' }}>&larr; Prev</button>
+              <button onClick={() => setPage(p => Math.max(1, p-1))} disabled={page === 1} className="btn-secondary" style={{ padding: '8px 18px' }}>&larr; {t('home.prev')}</button>
               {Array.from({ length: totalPages }, (_, i) => (
                 <button key={i+1} onClick={() => setPage(i+1)} className={page === i+1 ? 'btn-primary' : 'btn-secondary'} style={{ padding: '8px 14px', minWidth: '40px' }}>{i+1}</button>
               ))}
-              <button onClick={() => setPage(p => Math.min(totalPages, p+1))} disabled={page === totalPages} className="btn-secondary" style={{ padding: '8px 18px' }}>Next &rarr;</button>
+              <button onClick={() => setPage(p => Math.min(totalPages, p+1))} disabled={page === totalPages} className="btn-secondary" style={{ padding: '8px 18px' }}>{t('home.next')} &rarr;</button>
             </div>
           )}
 
           <p className="text-secondary text-center" style={{ marginTop: '16px', fontSize: '0.85rem' }}>
-            Showing {paginated.length} of {filtered.length} articles
+            {t('home.showing', { count: paginated.length, total: filtered.length })}
           </p>
         </>
       )}

@@ -85,6 +85,32 @@
   font-size: 0.95rem;
 }
 
+.lang-switcher {
+  display: flex;
+  gap: 8px;
+  background: var(--glass-border);
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.lang-btn {
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.lang-btn:hover {
+  color: var(--text-primary);
+}
+
+.lang-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
 @media (max-width: 768px) {
   .nav-links {
     gap: 16px;
