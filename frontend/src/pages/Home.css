@@ -1,0 +1,113 @@
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  gap: 20px;
+}
+
+.home-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-select {
+  height: var(--input-height);
+  padding: 0 18px;
+  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  outline: none;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 140px;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  height: var(--input-height);
+  padding: 0 18px;
+  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  width: 280px;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-input:focus {
+  border-color: var(--accent);
+  width: 320px;
+  background: rgba(139, 92, 246, 0.05);
+  box-shadow: 0 0 24px rgba(139, 92, 246, 0.15);
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 50px;
+}
+
+.pagination button {
+  height: 40px;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.pagination button:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+}
+
+@media (max-width: 768px) {
+  .home-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .home-title {
+    font-size: 2rem;
+  }
+
+  .home-filters {
+    width: 100%;
+  }
+
+  .search-input, .filter-select {
+    width: 100% !important;
+  }
+
+  .articles-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
